@@ -36,9 +36,9 @@ if st.button("Extract Headers"):
             st.markdown(heading, unsafe_allow_html=True)
             all_headings.append(heading)
     
-    # Join all headings and create a copy button
+        # Join all headings and create a copy button
     combined_headings = "\n".join(all_headings)
-    st.write("""
+    copy_html = """
         <textarea id="copyText" style="width:100%;height:100px;">{}</textarea>
         <button onclick="copyToClipboard()">Copy to Clipboard</button>
         <script>
@@ -48,4 +48,6 @@ if st.button("Extract Headers"):
                 document.execCommand("copy");
             }
         </script>
-    """.format(combined_headings), unsafe_allow_html=True)
+    """.format(combined_headings)
+    st.markdown(copy_html, unsafe_allow_html=True)
+

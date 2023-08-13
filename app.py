@@ -42,12 +42,11 @@ if st.button("Extract Headers"):
         <textarea id="copyText" style="width:100%;height:100px;">{}</textarea>
         <button onclick="copyToClipboard()">Copy to Clipboard</button>
         <script>
-            function copyToClipboard() {
+            function copyToClipboard() {{
                 var copyText = document.getElementById("copyText");
                 copyText.select();
                 document.execCommand("copy");
-            }
+            }}
         </script>
     """.format(combined_headings)
     st.markdown(copy_html, unsafe_allow_html=True)
-

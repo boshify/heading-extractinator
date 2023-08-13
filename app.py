@@ -48,3 +48,9 @@ if urls:
         </script>
     """.format(combined_headings)
     st.markdown(copy_html, unsafe_allow_html=True)
+
+# About the App section in the sidebar
+st.sidebar.header("About the App")
+st.sidebar.text("This app extracts the heading structure from up to 6 URLs.")
+st.sidebar.text("Made by Jonathan Boshoff")
+st.sidebar.markdown("[jonathanboshoff.com](https://jonathanboshoff.com)")

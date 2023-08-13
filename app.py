@@ -2,6 +2,9 @@ import streamlit as st
 import requests
 from bs4 import BeautifulSoup
 
+st.title('Heading Extractinator')
+
+@st.cache
 def extract_headings(url):
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
@@ -19,24 +22,19 @@ def extract_headings(url):
     
     return headings
 
-st.title('Website Header Extractor')
+urls = st.text_area("Enter up to 6 URLs (separated by new lines):").split("\n")
 
-urls = []
-for i in range(1, 7):
-    url = st.text_input(f"Enter URL {i}:", "")
-    if url:
-        urls.append(url)
-
-if st.button("Extract Headers"):
+if urls:
     all_headings = []
     for url in urls:
-        st.write(f"URL: {url}")
-        headings = extract_headings(url)
-        for heading in headings:
-            st.markdown(heading, unsafe_allow_html=True)
-            all_headings.append(heading)
-    
-        # Join all headings and create a copy button
+        if url:  # Check if the string is not empty
+            headings = extract_headings(url)
+            all_headings.extend(headings)
+            st.write(f"\nURL {url}\n")
+            for heading in headings:
+                st.markdown(heading, unsafe_allow_html=True)
+
+    # Join all headings and create a copy button
     combined_headings = "\n".join(all_headings)
     copy_html = """
         <textarea id="copyText" style="width:100%;height:100px;">{}</textarea>

@@ -12,7 +12,13 @@ def extract_headings(url):
         "Connection": "keep-alive",
     }
     
-    response = requests.get(url, headers=headers)
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()  # Raise an exception for HTTP errors
+    except requests.RequestException as e:
+        st.error(f"Error fetching URL {url}: {e}")
+        return []
+
     soup = BeautifulSoup(response.content, 'html.parser')
     
     headings = []
@@ -26,7 +32,7 @@ urls = st.text_area("Enter up to 6 URLs (separated by new lines):").split("\n")
 
 all_headings = []
 for url in urls:
-    if url:  # Check if the string is not empty
+    if url.strip():  # Check if the string is not empty or just whitespace
         headings = extract_headings(url)
         all_headings.extend(headings)
 
@@ -46,10 +52,11 @@ copy_html = """
 st.components.v1.html(copy_html, height=200)
 
 for url in urls:
-    st.write(f"\nURL {url}\n")
-    headings = extract_headings(url)
-    for heading in headings:
-        st.markdown(heading, unsafe_allow_html=True)
+    if url.strip():
+        st.write(f"\nURL {url}\n")
+        headings = extract_headings(url)
+        for heading in headings:
+            st.markdown(heading, unsafe_allow_html=True)
 
 # About the App section in the sidebar
 st.sidebar.header("About the App")

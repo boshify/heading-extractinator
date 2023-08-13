@@ -24,30 +24,32 @@ def extract_headings(url):
 
 urls = st.text_area("Enter up to 6 URLs (separated by new lines):").split("\n")
 
-if urls:
-    all_headings = []
-    for url in urls:
-        if url:  # Check if the string is not empty
-            headings = extract_headings(url)
-            all_headings.extend(headings)
-            st.write(f"\nURL {url}\n")
-            for heading in headings:
-                st.markdown(heading, unsafe_allow_html=True)
+all_headings = []
+for url in urls:
+    if url:  # Check if the string is not empty
+        headings = extract_headings(url)
+        all_headings.extend(headings)
 
-    # Join all headings and create a copy button
-    combined_headings = "\n".join(all_headings)
-    copy_html = """
-        <textarea id="copyText" style="width:100%;height:100px;">{}</textarea>
-        <button onclick="copyToClipboard()">Copy to Clipboard</button>
-        <script>
-            function copyToClipboard() {{
-                var copyText = document.getElementById("copyText");
-                copyText.select();
-                document.execCommand("copy");
-            }}
-        </script>
-    """.format(combined_headings)
-    st.markdown(copy_html, unsafe_allow_html=True)
+# Join all headings and create a copy button
+combined_headings = "\n".join(all_headings)
+copy_html = """
+    <textarea id="copyText" style="width:100%;height:100px;">{}</textarea>
+    <button onclick="copyToClipboard()">Copy to Clipboard</button>
+    <script>
+        function copyToClipboard() {{
+            var copyText = document.getElementById("copyText");
+            copyText.select();
+            document.execCommand("copy");
+        }}
+    </script>
+""".format(combined_headings)
+st.components.v1.html(copy_html, height=200)
+
+for url in urls:
+    st.write(f"\nURL {url}\n")
+    headings = extract_headings(url)
+    for heading in headings:
+        st.markdown(heading, unsafe_allow_html=True)
 
 # About the App section in the sidebar
 st.sidebar.header("About the App")

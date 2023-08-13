@@ -28,8 +28,24 @@ for i in range(1, 7):
         urls.append(url)
 
 if st.button("Extract Headers"):
+    all_headings = []
     for url in urls:
         st.write(f"URL: {url}")
         headings = extract_headings(url)
         for heading in headings:
             st.markdown(heading, unsafe_allow_html=True)
+            all_headings.append(heading)
+    
+    # Join all headings and create a copy button
+    combined_headings = "\n".join(all_headings)
+    st.write("""
+        <textarea id="copyText" style="width:100%;height:100px;">{}</textarea>
+        <button onclick="copyToClipboard()">Copy to Clipboard</button>
+        <script>
+            function copyToClipboard() {
+                var copyText = document.getElementById("copyText");
+                copyText.select();
+                document.execCommand("copy");
+            }
+        </script>
+    """.format(combined_headings), unsafe_allow_html=True)
